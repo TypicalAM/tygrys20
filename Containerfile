@@ -32,6 +32,11 @@ COPY --chmod=0755 ./system/usr__local__bin/* /usr/local/bin/
 COPY --chmod=0644 ./system/etc__skel__kde-bootc /etc/skel/.bashrc.d/kde-bootc
 COPY --chmod=0600 ./system/usr__lib__ostree__auth.json /usr/lib/ostree/auth.json
 
+# Custom non-rpm binaries
+ADD https://github.com/docker/docker-credential-helpers/releases/download/v0.9.3/docker-credential-pass-v0.9.3.linux-amd64 /usr/local/bin
+RUN chmod +x /usr/local/bin
+RUN cargo install eza gpg-tui
+
 # USERS
 COPY --chmod=0644 ./system/usr__lib__credstore__home.create.admin /usr/lib/credstore/home.create.admin
 
