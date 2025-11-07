@@ -25,6 +25,7 @@ glab
 gpgme-devel
 libgpg-error-devel
 pam-u2f
+pamu2fcfg
 pam_yubico
 pass
 stow
