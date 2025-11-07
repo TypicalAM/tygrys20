@@ -1,8 +1,12 @@
-FROM quay.io/fedora/fedora-bootc:43
-MAINTAINER First Last
+FROM quay.io/fedora-ostree-desktops/kinoite:43@sha256:befda793e2e7242273fb487b89f43e572d3342625a2b6e76ea4fc69d695d37be
+
+LABEL org.opencontainers.image.title="Custom fedora Kinoite"
+LABEL org.opencontainers.image.description="Customized image of Fedora Kinoite with Hyprland"
+LABEL org.opencontainers.image.source="https://github.com/TypicalAM/tygrys20"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # SETUP FILESYSTEM
-RUN rmdir /opt && ln -s -T /var/opt /opt
+# RUN rmdir /opt && ln -s -T /var/opt /opt
 RUN mkdir /var/roothome
 
 # PREPARE PACKAGES
@@ -12,10 +16,10 @@ RUN jq -r .packages[] /usr/share/rpm-ostree/treefile.json > /usr/local/share/kde
 
 # INSTALL REPOS
 RUN dnf -y install dnf5-plugins
-RUN dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo 
+RUN dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+COPY ./system/etc__yum.repos.d/* /etc/yum.repos.d/
 
 # INSTALL PACKAGES
-RUN dnf -y install @kde-desktop-environment
 RUN grep -vE '^#' /usr/local/share/kde-bootc/packages-added | xargs dnf -y install --allowerasing
 
 # REMOVE PACKAGES
