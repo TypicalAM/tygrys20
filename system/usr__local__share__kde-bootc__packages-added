@@ -3,7 +3,6 @@
 ####################################################
 
 # My packages
-virt-manager
 gparted
 nwg-displays
 hyprland
@@ -102,8 +101,10 @@ cockpit-selinux
 cockpit-machines
 
 # Virtualisation
+qemu-system-aarch64
 qemu-kvm
 libvirt
+virt-manager
 virt-install
 virt-viewer
 
