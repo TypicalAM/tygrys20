@@ -1,0 +1,3 @@
+- [ ] Secure boot
+- [ ] uki
+- [x] U2F with polkit
