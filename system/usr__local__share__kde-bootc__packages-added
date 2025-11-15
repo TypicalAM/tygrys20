@@ -3,6 +3,7 @@
 ####################################################
 
 # My packages
+systemd-devel
 gparted
 nwg-displays
 hyprland
