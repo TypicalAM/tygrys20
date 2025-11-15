@@ -1,4 +1,4 @@
-FROM quay.io/fedora-ostree-desktops/kinoite:43@sha256:befda793e2e7242273fb487b89f43e572d3342625a2b6e76ea4fc69d695d37be
+FROM quay.io/fedora-ostree-desktops/kinoite:43
 
 LABEL org.opencontainers.image.title="Custom fedora Kinoite"
 LABEL org.opencontainers.image.description="Customized image of Fedora Kinoite with Hyprland"
