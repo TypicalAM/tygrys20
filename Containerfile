@@ -46,7 +46,7 @@ RUN bash -c "git clone https://gitlab.com/asus-linux/supergfxctl /tmp/supergfxct
 
 # Build
 COPY ./refind-script.go /tmp/refind-script.go
-RUN go build /tmp/refind-script.go -o /usr/local/bin/update-refind
+RUN go build -o /usr/bin/update-refind /tmp/refind-script.go
 
 # USERS
 COPY --chmod=0644 ./system/usr__lib__credstore__home.create.admin /usr/lib/credstore/home.create.admin

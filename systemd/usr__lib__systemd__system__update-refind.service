@@ -5,7 +5,7 @@ After=ostree-finalize-staged.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/update-refind
+ExecStart=/usr/bin/update-refind
 
 [Install]
 WantedBy=multi-user.target
