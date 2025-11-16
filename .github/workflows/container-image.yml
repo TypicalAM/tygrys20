@@ -1,34 +1,37 @@
 name: Build image
 run-name: Build image
+
 on: 
   workflow_dispatch:
   push:
     branches:
-    - '**'
+      - '**'
   schedule:
-  - cron: '30 13 * * FRI'    # Triggers Fri at 13:30
-
+    - cron: '30 13 * * FRI'    # Triggers Fri at 13:30
 
 jobs:
   io-image:
     runs-on: ubuntu-latest
     steps:
+
     - name: Delete huge unnecessary tools folder
       run: |
         rm -rf /opt/hostedtoolcache
         find . -maxdepth 1 -mindepth 1 '!' -path ./containerd '!' -path ./actionarchivecache '!' -path ./runner '!' -path ./runner-cache -exec rm -rf '{}' ';'
+
     - uses: actions/checkout@v4
+
     - name: Podman login
       env:
         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USER }}
         REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASS }}
       run: |
-          echo "$REGISTRY_PASSWORD" | podman login docker.piaseczny.dev \
-            --username "$REGISTRY_USERNAME" \
-            --password-stdin
+        echo "$REGISTRY_PASSWORD" | podman login docker.piaseczny.dev \
+          --username "$REGISTRY_USERNAME" \
+          --password-stdin
 
     - name: Build image
       run: podman build -t docker.piaseczny.dev/tygrys20:latest .
 
     - name: Push image
-      run: podman push -t docker.piaseczny.dev/tygrys20:latest
+      run: podman push docker.piaseczny.dev/tygrys20:latest
