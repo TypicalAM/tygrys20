@@ -3,6 +3,7 @@
 ####################################################
 
 # My packages
+restic
 looking-glass-client
 steam
 systemd-devel
