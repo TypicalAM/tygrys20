@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - '**'
+    paths-ignore:
+      - '**/*.md'
+      - '*.md'
+      - 'docs/**'
   schedule:
     - cron: '30 13 * * FRI'    # Triggers Fri at 13:30
 
@@ -30,8 +34,14 @@ jobs:
           --username "$REGISTRY_USERNAME" \
           --password-stdin
 
-    - name: Build image
-      run: podman build -t docker.piaseczny.dev/tygrys20:latest .
+    - name: Build base image
+      run: podman build -t docker.piaseczny.dev/tygrys20:latest --target base .
 
-    - name: Push image
+    - name: Build NVIDIA image
+      run: podman build -t docker.piaseczny.dev/tygrys20:nvidia --target nvidia .
+
+    - name: Push base image
       run: podman push docker.piaseczny.dev/tygrys20:latest
+
+    - name: Push NVIDIA image
+      run: podman push docker.piaseczny.dev/tygrys20:nvidia
