@@ -5,6 +5,7 @@
 # My packages
 just
 wireshark
+btrfs-assistant
 restic
 steam
 systemd-devel
