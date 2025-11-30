@@ -49,9 +49,14 @@ RUN bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=[sudo\] Confi
 FROM base AS nvidia
 
 COPY --chmod=0644 ./system/etc__supergfxd.conf /etc/supergfxd.conf
+COPY --chmod=0644 ./system/etc__tmpfiles.d__10-looking-glass.conf /etc/tmpfiles.d/10-looking-glass.conf
+
 RUN bash -c "git clone https://gitlab.com/asus-linux/supergfxctl /tmp/supergfxctl && cd /tmp/supergfxctl && make && make install" && \
     rm -rf /tmp/supergfxctl
 
-RUN systemctl enable supergfxd.service && \
+RUN dnf install -y looking-glass-client && \
+    dnf -y autoremove && \
+    dnf clean all && \
+    systemctl enable supergfxd.service && \
     find /var/log -type f ! -empty -delete && \
     bootc container lint
