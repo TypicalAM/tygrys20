@@ -7,6 +7,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 
 COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-removed /usr/share/tygrys20/packages-removed
 COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added /usr/share/share/tygrys20/packages-added
+COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added-nvidia /usr/share/share/tygrys20/packages-added-nvidia
 COPY ./system/etc__yum.repos.d/* /etc/yum.repos.d/
 ADD https://github.com/docker/docker-credential-helpers/releases/download/v0.9.3/docker-credential-pass-v0.9.3.linux-amd64 /usr/bin
 COPY --chmod=0755 ./system/usr__local__bin/* /usr/local/bin/
@@ -51,10 +52,7 @@ FROM base AS nvidia
 COPY --chmod=0644 ./system/etc__supergfxd.conf /etc/supergfxd.conf
 COPY --chmod=0644 ./system/etc__tmpfiles.d__10-looking-glass.conf /etc/tmpfiles.d/10-looking-glass.conf
 
-RUN bash -c "git clone https://gitlab.com/asus-linux/supergfxctl /tmp/supergfxctl && cd /tmp/supergfxctl && make && make install" && \
-    rm -rf /tmp/supergfxctl
-
-RUN dnf install -y looking-glass-client && \
+RUN grep -vE '^#' /usr/local/share/tygrys20/packages-added-nvidia | xargs dnf -y install --allowerasing && \
     dnf -y autoremove && \
     dnf clean all && \
     systemctl enable supergfxd.service && \

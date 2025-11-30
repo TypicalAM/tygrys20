@@ -3,13 +3,13 @@
 - [-] Secure boot (???)
 - [-] uki
 - [ ] h264 - vlc & firefox
+- [ ] Automatic after snapper
+- [ ] Testing on sencond machine
 - [x] U2F with polkit
 - [x] Looking glass client
 - [x] Enable na supergfxctl
 - [x] Refind update
-- [ ] Automatic after snapper
-- [ ] Nvidia specialization image with VFIO configs readyy
-- [ ] Testing on sencond machine
+- [x] Nvidia specialization image with VFIO configs readyy
 
 # Hyprland (outdated):
 
