@@ -6,8 +6,8 @@ LABEL org.opencontainers.image.source="https://github.com/TypicalAM/tygrys20"
 LABEL org.opencontainers.image.licenses="MIT"
 
 COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-removed /usr/share/tygrys20/packages-removed
-COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added /usr/share/share/tygrys20/packages-added
-COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added-nvidia /usr/share/share/tygrys20/packages-added-nvidia
+COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added /usr/share/tygrys20/packages-added
+COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added-nvidia /usr/share/tygrys20/packages-added-nvidia
 COPY ./system/etc__yum.repos.d/* /etc/yum.repos.d/
 ADD https://github.com/docker/docker-credential-helpers/releases/download/v0.9.3/docker-credential-pass-v0.9.3.linux-amd64 /usr/bin
 COPY --chmod=0755 ./system/usr__local__bin/* /usr/local/bin/
@@ -32,8 +32,8 @@ RUN bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=[sudo\] Confi
     dnf -y install \
 	"https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
 	"https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" && \
-    grep -vE '^#' /usr/local/share/tygrys20/packages-added | xargs dnf -y install --allowerasing && \
-    grep -vE '^#' /usr/local/share/tygrys20/packages-removed | xargs dnf -y remove && \
+    grep -vE '^#' /usr/share/tygrys20/packages-added | xargs dnf -y install --allowerasing && \
+    grep -vE '^#' /usr/share/tygrys20/packages-removed | xargs dnf -y remove && \
     dnf -y autoremove && \
     dnf clean all && \
     cargo install eza gpg-tui && \ 
@@ -52,7 +52,7 @@ FROM base AS nvidia
 COPY --chmod=0644 ./system/etc__supergfxd.conf /etc/supergfxd.conf
 COPY --chmod=0644 ./system/etc__tmpfiles.d__10-looking-glass.conf /etc/tmpfiles.d/10-looking-glass.conf
 
-RUN grep -vE '^#' /usr/local/share/tygrys20/packages-added-nvidia | xargs dnf -y install --allowerasing && \
+RUN grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --allowerasing && \
     dnf -y autoremove && \
     dnf clean all && \
     systemctl enable supergfxd.service && \
