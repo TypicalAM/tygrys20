@@ -49,13 +49,32 @@ RUN bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=[sudo\] Confi
     systemctl mask bootc-fetch-apply-updates.timer && \
     find /var/log -type f ! -empty -delete && \
     bootc container lint
-#
-# FROM base AS nvidia
-#
-# COPY --chmod=0644 ./system/etc__supergfxd.conf /etc/supergfxd.conf
-# COPY --chmod=0644 ./system/etc__tmpfiles.d__10-looking-glass.conf /etc/tmpfiles.d/10-looking-glass.conf
-# COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added-nvidia /usr/share/tygrys20/packages-added-nvidia
-#
+
+FROM quay.io/fedora-ostree-desktops/kinoite@sha256:8c88dcd524ad3347ded03929cae0b930d52a1d51d67f61ff3f9c2e9016ba95b1 AS nvidia-builder
+
+COPY scripts/builder.sh /
+RUN /builder.sh
+COPY scripts/build-kmod-nvidia-open-dkms.sh /
+RUN /build-kmod-nvidia-open-dkms.sh
+
+#################################
+
+FROM base AS nvidia
+
+COPY --chmod=0644 ./system/etc__supergfxd.conf /etc/supergfxd.conf
+COPY --chmod=0644 ./system/etc__tmpfiles.d__10-looking-glass.conf /etc/tmpfiles.d/10-looking-glass.conf
+COPY --chmod=0644 ./system/usr__local__share__tygrys20__packages-added-nvidia /usr/share/tygrys20/packages-added-nvidia
+
+COPY --from=nvidia-builder /usr/src/nvidia-580.105.08/ /usr/src/nvidia-580.105.08/
+COPY --from=nvidia-builder /var/lib/dkms/ /var/lib/dkms/
+
+COPY scripts/install-kmod-nvidia-open-dkms.sh /
+RUN /install-kmod-nvidia-open-dkms.sh && rm -f /install-kmod-nvidia-open-dkms.sh
+
+# We install the NVIDIA toolkit
+COPY scripts/install-nvidia-toolkit.sh /
+RUN /install-nvidia-toolkit.sh && rm -f /install-nvidia-toolkit.sh
+
 # RUN <<EOF
 # set -euox pipefail
 #
@@ -76,4 +95,4 @@ RUN bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=[sudo\] Confi
 # EOF
 #
 # # dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld && \
-# # dnf swap -y mesa-vdpau-drivers mesa-vdpau-drivers-freeworld && \
+# dnf swap -y mesa-vdpau-drivers mesa-vdpau-drivers-freeworld && \

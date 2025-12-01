@@ -36,12 +36,9 @@ jobs:
 
     - name: Build base image
       run: podman build -t docker.piaseczny.dev/machine/tygrys20:latest --target base .
+    - name: Build NVIDIA image
+      run: podman build -t docker.piaseczny.dev/machine/tygrys20:nvidia --target nvidia .
     - name: Push base image
-      run: podman push docker.piaseczny.dev/machine/tygrys20:latest
-
-    # - name: Build NVIDIA image
-    #   run: podman build -t docker.piaseczny.dev/machine/tygrys20:nvidia --target nvidia .
-    #
-    #
-    # - name: Push NVIDIA image
-    #   run: podman push docker.piaseczny.dev/machine/tygrys20:nvidia
+       run: podman push docker.piaseczny.dev/machine/tygrys20:latest
+    - name: Push NVIDIA image
+      run: podman push docker.piaseczny.dev/machine/tygrys20:nvidia
