@@ -6,7 +6,7 @@ K_VRA=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}\n" kernel-core)
 
 source /etc/os-release
 
-curl https://developer.download.nvidia.com/compute/cuda/repos/${ID}${VERSION_ID}/${ARCH}/cuda-${ID}${VERSION_ID}.repo \
+curl https://developer.download.nvidia.com/compute/cuda/repos/fedora42/x86_64/cuda-fedora42.repo \
     -o /etc/yum.repos.d/nvidia.repo
 
 dnf install -y --no-docs --best kmod-nvidia-open-dkms
