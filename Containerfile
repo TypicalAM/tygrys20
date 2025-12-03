@@ -48,6 +48,7 @@ RUN kver="$(cd /usr/lib/modules && echo *)" && \
     grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --allowerasing && \
     dnf -y autoremove && \
     dnf clean all && \
+    chmod +x /tmp/scripts/build-kmod && \
     /tmp/scripts/build-kmod && \
     rm /tmp/scripts/build-kmod && \
     systemctl enable supergfxd.service && \
