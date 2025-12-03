@@ -1,6 +1,6 @@
 [copr:copr.fedorainfracloud.org:pgaskin:looking-glass-client]
 name=Copr repo for looking-glass-client owned by pgaskin
-baseurl=https://download.copr.fedorainfracloud.org/results/pgaskin/looking-glass-client/fedora-43-x86_64/
+baseurl=https://download.copr.fedorainfracloud.org/results/pgaskin/looking-glass-client/fedora-$releasever-x86_64/
 type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1
