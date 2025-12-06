@@ -58,11 +58,6 @@ python3-pip
 
 # Virtualisation
 qemu-system-aarch64
-qemu-kvm
-libvirt
-virt-manager
-virt-install
-virt-viewer
 
 # Tailscale network
 tailscale
