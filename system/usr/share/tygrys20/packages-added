@@ -2,7 +2,6 @@
 # List of packages to install on top of base image
 ####################################################
 
-# My packages
 just
 wireshark
 btrfs-assistant
@@ -43,6 +42,7 @@ distrobox
 duf
 fzf
 gum
+git
 git-crypt
 pass
 containerd
@@ -50,11 +50,14 @@ docker
 docker-buildx
 docker-compose
 moby-engine
-
-# Utilities
-git
-vifm
-python3-pip
+firefox
+NetworkManager-bluetooth
+NetworkManager-ppp
+NetworkManager-wifi
+NetworkManager-wwan
+ffmpeg
+wpa_supplicant
+rsync
 
 # Virtualisation
 qemu-system-aarch64

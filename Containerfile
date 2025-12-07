@@ -9,17 +9,15 @@ COPY --chmod=0644 ./system/etc /etc
 COPY --chmod=0755 ./scripts /tmp/scripts/
 COPY ./system/usr /usr
 
-RUN dnf group install -y kde-desktop virtualization && \
+RUN dnf group install -y kde-desktop virtualization multimedia && \
     bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=[sudo\] Confirm your identity through U2F]' /etc/pam.d/sudo || sed -i '1a auth sufficient pam_u2f.so cue [cue_prompt=[sudo\\\] Confirm your identity through U2F]' /etc/pam.d/sudo" && \
     cp /usr/lib/pam.d/polkit-1 /etc/pam.d && \
     bash -c "grep -Fxq 'auth sufficient pam_u2f.so cue [cue_prompt=Confirm your identity through U2F]' /etc/pam.d/polkit-1 || sed -i '1a auth sufficient pam_u2f.so cue [cue_prompt=Confirm your identity through U2F]' /etc/pam.d/polkit-1" && \
     rm -rf /opt && ln -s -T /var/opt /opt && \
     mkdir /var/roothome && \
-    dnf -y upgrade && \
     dnf -y install \
 	"https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
 	"https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" && \
-    dnf group install -y multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin && \
     grep -vE '^#' /usr/share/tygrys20/packages-added | xargs dnf -y install --allowerasing && \
     grep -vE '^#' /usr/share/tygrys20/packages-removed | xargs dnf -y remove && \
     dnf -y autoremove && \
