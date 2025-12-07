@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+curl -LO https://github.com/orhun/gpg-tui/releases/download/v0.11.1/gpg-tui-0.11.1-x86_64-unknown-linux-gnu.tar.gz && \
+tar xzf gpg-tui-0.11.1-x86_64-unknown-linux-gnu.tar.gz
+mv gpg-tui-0.11.1/gpg-tui /usr/bin
+rm -rf gpg-tui-0.11.1 gpg-tui-0.11.1-x86_64-unknown-linux-gnu.tar.gz
+
+curl -LO https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.zip
+unzip eza_x86_64-unknown-linux-gnu.zip
+mv eza /usr/bin
+rm -rf eza_x86_64-unknown-linux-gnu.zip 
+
+go build -o /usr/bin/update-refind /tmp/src/refind-updater.go
+rm -rf /var/roothome/.config /var/roothome/.cache # go builds cache
