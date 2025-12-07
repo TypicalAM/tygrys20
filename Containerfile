@@ -8,7 +8,8 @@ LABEL org.opencontainers.image.licenses="MIT"
 COPY --chmod=0644 ./system/etc /etc
 COPY --chmod=0755 ./system/scripts /tmp/scripts
 COPY --chmod=0644 ./src/ /tmp/src
-COPY ./system/usr /usr
+COPY ./system/usr/share/tygrys20 /usr/share/tygrys20
+COPY ./system/usr/lib/systemd /usr/lib/systemd
 
 RUN rm -rf /opt && \
     ln -s -T /var/opt /opt && \
@@ -22,11 +23,14 @@ RUN rm -rf /opt && \
     rm -rf /var/cache /var/log /tmp/scripts /var/roothome/.config /var/roothome/.cache /var/lib/systemd && \
     bootc container lint
 
+COPY ./system/usr /usr
+
 FROM base AS nvidia
 
 COPY --chmod=0644 ./nvidia/etc /etc
 COPY --chmod=0755 ./nvidia/scripts /tmp/scripts
-COPY ./nvidia/usr /usr
+COPY ./nvidia/usr/share/tygrys20 /usr/share/tygrys20
+COPY ./nvidia/usr/lib/systemd /usr/lib/systemd
 
 RUN kver=$(cd /usr/lib/modules && echo *) && \
     grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
@@ -34,3 +38,5 @@ RUN kver=$(cd /usr/lib/modules && echo *) && \
     rm -rf /var/cache /var/log /var/run* /tmp/scripts/build-kmod && \
     systemctl enable supergfxd.service && \
     bootc container lint
+
+COPY ./nvidia/usr /usr
