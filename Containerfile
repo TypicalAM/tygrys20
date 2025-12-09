@@ -20,6 +20,7 @@ RUN rm -rf /opt && \
     /tmp/scripts/config-authselect && \
     /tmp/scripts/config-yubikey && \
     /tmp/scripts/config-systemd && \
+    /tmp/scripts/config-release-info && \
     rm -rf /var/cache /var/log /tmp/scripts /var/roothome/.config /var/roothome/.cache /var/lib/systemd && \
     bootc container lint
 

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OS_RELEASE_FILE="/usr/lib/os-release"
+REMIX_NAME="Tygrys20"
+CURRENT_DATE=$(date "+%d.%m.%Y")
+GITHUB_REPO_OWNER="TypicalAM"
+GITHUB_REPO_NAME="tygrys20"
+
+echo "Applying custom os-release modifications to $OS_RELEASE_FILE..."
+
+# 1. Calculate new VERSION and PRETTY_NAME
+#    VERSION="42 DD.MM.YYYY (REMIX_NAME)"
+#    PRETTY_NAME="Fedora Linux 42 DD.MM.YYYY (REMIX_NAME)"
+#
+#    We need the VERSION_ID from the existing file to construct these correctly.
+#    VERSION_ID=$(grep -E '^VERSION_ID=' "$OS_RELEASE_FILE" | cut -d'=' -f2 | tr -d '"')
+
+# Derive current base Fedora version from VERSION_ID
+# This assumes VERSION_ID is a simple number like 42
+BASE_FEDORA_VERSION_ID=$(grep '^VERSION_ID=' "$OS_RELEASE_FILE" | head -n 1 | cut -d'=' -f2 | tr -d '"')
+if [[ -z "$BASE_FEDORA_VERSION_ID" ]]; then
+    echo "ERROR: Could not find VERSION_ID in $OS_RELEASE_FILE. Cannot proceed." >&2
+    exit 1
+fi
+
+NEW_VERSION="${BASE_FEDORA_VERSION_ID}.${CURRENT_DATE} (${REMIX_NAME})"
+NEW_PRETTY_NAME="Fedora Linux ${BASE_FEDORA_VERSION_ID} ${CURRENT_DATE} (${REMIX_NAME})"
+NEW_OSTREE_VERSION="${BASE_FEDORA_VERSION_ID} ${CURRENT_DATE} "
+
+sed -i "s|^DOCUMENTATION_URL=.*|DOCUMENTATION_URL=\"https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/wiki\"|" "$OS_RELEASE_FILE"
+sed -i "s|^BUG_REPORT_URL=.*|BUG_REPORT_URL=\"https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/issues\"|" "$OS_RELEASE_FILE"
+
+if grep -q '^VARIANT=' "$OS_RELEASE_FILE"; then
+    sed -i "s|^VARIANT=.*|VARIANT=\"${REMIX_NAME}\"|" "$OS_RELEASE_FILE"
+else
+    echo "VARIANT=\"${REMIX_NAME}\"" >> "$OS_RELEASE_FILE"
+fi
+
+if grep -q '^VARIANT_ID=' "$OS_RELEASE_FILE"; then
+    sed -i "s|^VARIANT_ID=.*|VARIANT_ID=${REMIX_NAME,,}|" "$OS_RELEASE_FILE"
+else
+    echo "VARIANT_ID=${REMIX_NAME,,}" >> "$OS_RELEASE_FILE"
+fi
+
+sed -i "s|^OSTREE_VERSION=.*|OSTREE_VERSION='${NEW_OSTREE_VERSION}'|" "$OS_RELEASE_FILE"
+sed -i "s|^VERSION=.*|VERSION=\"${NEW_VERSION}\"|" "$OS_RELEASE_FILE"
+sed -i "s|^HOME_URL=.*|HOME_URL=\"https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}\"|" "$OS_RELEASE_FILE"
+sed -i "s|^SUPPORT_URL=.*|SUPPORT_URL=\"https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/issues\"|" "$OS_RELEASE_FILE"
+sed -i "s|^PRETTY_NAME=.*|PRETTY_NAME=\"${NEW_PRETTY_NAME}\"|" "$OS_RELEASE_FILE"
+
+echo "os-release modifications complete."
+
+echo -e "\n--- Modified $OS_RELEASE_FILE ---"
+cat "$OS_RELEASE_FILE"
+echo "------------------------------"
