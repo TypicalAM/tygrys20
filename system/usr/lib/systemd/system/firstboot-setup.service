@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/firstboot-setup
+ExecStart=/usr/bin/firstboot-setup
 ImportCredential=home.create.*
 
 [Install]
