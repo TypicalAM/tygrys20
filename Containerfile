@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-bootc:42@sha256:0ae27dac39cce4736f83a68f03eadcb429250a781ab0aeaff7d9212cc7a84a5b AS base
+FROM quay.io/fedora/fedora-bootc:42@sha256:ea981f7cf6c50fe73e2ab0ee0fd5e7e62699af72d7d2b6104a2f4f1abcda39bf AS base
 
 LABEL org.opencontainers.image.title="Custom fedora bootc"
 LABEL org.opencontainers.image.description="Customized image of Fedora Bootc"
