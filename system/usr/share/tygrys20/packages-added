@@ -62,6 +62,35 @@ NetworkManager-wwan
 ffmpeg
 wpa_supplicant
 rsync
+obs-studio
+obs-studio-plugin-x264
+plymouth
+
+# Hyprland
+cliphist
+grim
+gvfs
+gvfs-mtp
+hypridle
+hyprland
+hyprlock
+hyprpaper
+hyprpolkitagent
+inxi
+network-manager-applet
+nwg-displays
+nwg-look
+pavucontrol
+python3-pip
+python3-pyquery
+qt5ct
+qt6ct
+slurp
+swappy
+SwayNotificationCenter
+swww
+wlogout
+yad
 
 # Virtualisation
 qemu-system-aarch64
