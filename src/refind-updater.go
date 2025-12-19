@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const REFIND_CONFIG_PATH = "/boot/efi/EFI/refind/fedora-atomic.conf"
+
 type (
 	BootEntries       map[string]BootEntry
 	BootEntry         map[KernelConfigKey]KernelConfigValue
@@ -66,6 +68,11 @@ func mustGet(entry BootEntry, key string, file string) KernelConfigValue {
 }
 
 func main() {
+	if _, err := os.Stat(REFIND_CONFIG_PATH); err != nil {
+		log.Printf("Bailing out: %v\n", err)
+		return
+	}
+
 	bootEntriesBasePath := "/boot/loader/entries/"
 	entries, err := os.ReadDir(bootEntriesBasePath)
 	if err != nil {
@@ -147,10 +154,9 @@ func main() {
 		buf.WriteRune('\n')
 	}
 
-	refindConfig := "/boot/efi/EFI/refind/fedora-atomic.conf"
-	if err := os.WriteFile(refindConfig, buf.Bytes(), 0644); err != nil {
-		log.Fatalf("Failed writing rEFInd config %q: %v", refindConfig, err)
+	if err := os.WriteFile(REFIND_CONFIG_PATH, buf.Bytes(), 0644); err != nil {
+		log.Fatalf("Failed writing rEFInd config %s: %v", REFIND_CONFIG_PATH, err)
 	}
 
-	log.Printf("Updated rEFInd configuration at %s", refindConfig)
+	log.Printf("Updated rEFInd configuration at %s", REFIND_CONFIG_PATH)
 }
