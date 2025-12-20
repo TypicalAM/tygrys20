@@ -10,6 +10,8 @@ on:
       - '**/*.md'
       - '*.md'
       - 'docs/**'
+      - 'compose/**'
+      - '.*'
   schedule:
     - cron: '30 13 * * FRI'    # Triggers Fri at 13:30
 
