@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 const REFIND_CONFIG_PATH = "/boot/efi/EFI/refind/fedora-atomic.conf"
@@ -19,53 +20,49 @@ type (
 	KernelConfigValue string
 )
 
-func makeKey(indent int, key KernelConfigKey, val KernelConfigValue) string {
-	prefix := strings.Repeat("\t", indent)
-	if strings.ContainsRune(string(val), ' ') {
-		return fmt.Sprintf("%s%s \"%s\"\n", prefix, key, val)
+var generateEntryT = template.Must(template.New("entry").Funcs(template.FuncMap{
+	"repeat":   strings.Repeat,
+	"hasSpace": func(s string) bool { return strings.ContainsRune(s, ' ') },
+}).Parse(
+	`menuentry "{{.Title}}" {
+	title "{{.Title}}"
+	icon /EFI/refind/themes/rEFInd-glassy/icons/os_core.png
+	loader {{.UkiPath}}
+	graphics on
+
+	submenuentry "Boot with VFIO" {
+		loader /fedora-atomic{{.Linux}}
+		initrd /fedora-atomic{{.Initrd}}
+		options {{.Options}} supergfxd.mode=Vfio
+		graphics on
 	}
-	return fmt.Sprintf("%s%s %s\n", prefix, key, val)
-}
 
-func generateEntryText(entry BootEntry) string {
-	b := strings.Builder{}
-	title := entry["title"]
-	linux := entry["linux"]
-	initrd := entry["initrd"]
-	opts := entry["options"]
+	submenuentry "Boot with only integrated GPU" {
+		loader /fedora-atomic{{.Linux}}
+		initrd /fedora-atomic{{.Initrd}}
+		options {{.Options}} supergfxd.mode=Integrated
+		graphics on
+	}
+}`))
 
-	b.WriteString(fmt.Sprintf("menuentry \"%s\" {\n", title))
-	b.WriteString(makeKey(1, "title", title))
-	b.WriteString(makeKey(1, "loader", "/fedora-atomic"+linux))
-	b.WriteString(makeKey(1, "initrd", "/fedora-atomic"+initrd))
-	b.WriteString(makeKey(1, "options", opts))
-	b.WriteString(makeKey(1, "graphics", "on"))
-	b.WriteString(makeKey(1, "icon", "/EFI/refind/themes/rEFInd-glassy/icons/os_chakra.png"))
-
-	vfioOpts := opts + " supergfxd.mode=Vfio"
-	b.WriteString("\n\tsubmenuentry \"Boot with VFIO\" {\n")
-	b.WriteString(makeKey(2, "loader", "/fedora-atomic"+linux))
-	b.WriteString(makeKey(2, "initrd", "/fedora-atomic"+initrd))
-	b.WriteString(makeKey(2, "options", KernelConfigValue(vfioOpts)))
-	b.WriteString("\t}\n")
-
-	iGPUOpts := opts + " supergfxd.mode=Integrated"
-	b.WriteString("\n\tsubmenuentry \"Boot with only integrated GPU\" {\n")
-	b.WriteString(makeKey(2, "loader", "/fedora-atomic"+linux))
-	b.WriteString(makeKey(2, "initrd", "/fedora-atomic"+initrd))
-	b.WriteString(makeKey(2, "options", KernelConfigValue(iGPUOpts)))
-	b.WriteString("\t}\n")
-
-	b.WriteString("}\n\n")
-
-	ukiFile := filepath.Dir("/fedora-atomic"+string(linux)) + "/UKI.efi"
-	b.WriteString(fmt.Sprintf("menuentry \"%s\" (UKI) {\n", title))
-	b.WriteString(makeKey(1, "graphics", "on"))
-	b.WriteString(makeKey(1, "icon", "/EFI/refind/themes/rEFInd-glassy/icons/os_chakra.png"))
-	b.WriteString(makeKey(1, "loader", KernelConfigValue(ukiFile)))
-	b.WriteString("}\n")
-
-	return b.String()
+// GenerateEntry renders the entry from a data map.
+func GenerateEntry(entry BootEntry) (string, error) {
+	title := string(entry["title"])
+	linux := string(entry["linux"])
+	initrd := string(entry["initrd"])
+	opts := string(entry["options"])
+	data := map[string]string{
+		"Title":   title,
+		"Linux":   linux,
+		"Initrd":  initrd,
+		"Options": opts,
+		"UkiPath": filepath.Dir("/fedora-atomic"+linux) + "/UKI.efi",
+	}
+	var buf bytes.Buffer
+	if err := generateEntryT.Execute(&buf, data); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
 
 const ukiTemplate = `[UKI]
@@ -203,7 +200,11 @@ func main() {
 	// Generate refind config
 	var buf bytes.Buffer
 	for _, entry := range bootEntries {
-		text := generateEntryText(entry)
+		text, err := GenerateEntry(entry)
+		if err != nil {
+			log.Fatalf("Failed to generate entry text: %v", err)
+		}
+
 		buf.WriteString(text)
 		buf.WriteRune('\n')
 	}
