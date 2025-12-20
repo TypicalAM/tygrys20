@@ -1,6 +1,5 @@
-# Using own mirror of quay.io/fedora/fedora-bootc:43@sha256:42983ec7e3b625f8182ee0e275b0cbd0ab95aafd97374f95afbaacc8452267ef
-# Because people at quay make images obsolete frequently and I want to get the cache benefits. Maybe will move to pungi soon.
-FROM docker.io/typicalam/fedora-bootc:43 AS base
+# Using own mirror of kinoite built from compose because I ran into some caching problems
+FROM docker.io/typicalam/kinoite:43 AS base
 
 LABEL org.opencontainers.image.title="Custom fedora bootc"
 LABEL org.opencontainers.image.description="Customized image of Fedora Bootc"
