@@ -23,12 +23,12 @@ RUN rm -rf /opt && \
     /tmp/scripts/config-systemd && \
     /tmp/scripts/config-release-info && \
     /tmp/scripts/build-initramfs && \
-    rm -rf /var/cache /var/log /tmp/scripts /var/roothome/.config /var/roothome/.cache /var/lib/systemd && \
-    bootc container lint
+    rm -rf /var/cache /var/run /var/log /tmp/scripts /var/roothome/.config /var/roothome/.cache /var/lib/systemd
 
 COPY ./system/usr /usr
 
-RUN chmod +x /usr/bin/firstboot-setup
+RUN chmod +x /usr/bin/firstboot-setup && \
+    bootc container lint
 
 FROM base AS nvidia
 
