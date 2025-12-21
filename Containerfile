@@ -1,5 +1,5 @@
-# Using own mirror of kinoite built from compose because I ran into some caching problems
-FROM docker.io/typicalam/kinoite:43 AS base
+# Using own mirror of fedora-bootc from https://gitlab.com/fedora/bootc/base-images to allow for better package caching
+FROM docker.io/typicalam/fedora-bootc:43 AS base
 
 LABEL org.opencontainers.image.title="Custom fedora bootc"
 LABEL org.opencontainers.image.description="Customized image of Fedora Bootc"
@@ -41,7 +41,7 @@ COPY ./nvidia/usr/lib/systemd /usr/lib/systemd
 RUN grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
     /tmp/scripts/build-kmod && \
     /tmp/scripts/build-initramfs && \
-    rm -rf /var/cache /var/log /var/run* /tmp/scripts && \
+    rm -rf /var/cache /var/lib /var/log /var/run* /tmp/scripts && \
     systemctl enable supergfxd.service && \
     bootc container lint
 
