@@ -9,9 +9,9 @@ sudo rpm-ostree rebase ostree-unverified-registry:docker.piaseczny.dev/machine/t
 
 # TODO
 
-- [-] Secure boot (???)
-- [-] uki
-- [ ] Automatic after snapper
+- [-] Automatic after snapper - used btrfs-assistant with default settings
+- [-] Secure boot (N/A)
+- [x] uki
 - [x] h264 - vlc & firefox
 - [x] Testing on sencond machine
 - [x] U2F with polkit
