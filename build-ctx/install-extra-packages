@@ -26,3 +26,4 @@ go build -o /usr/bin/update-refind /ctx/refind-updater.go
 rm -rf /var/roothome/.config # go builds cache
 
 curl -L https://github.com/docker/docker-credential-helpers/releases/download/v0.9.3/docker-credential-pass-v0.9.3.linux-amd64 -o /usr/bin/docker-credential-pass
+chmod +x docker-credential-pass
