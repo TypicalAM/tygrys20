@@ -28,7 +28,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/config-systemd && \
     /ctx/config-release-info && \
     /ctx/build-initramfs && \
-    rm -rf /var/lib /var/run /var/lib/dnf /var/roothome/.cache
+    rm -rf /var/run /var/lib/dnf /var/roothome/.cache
 
 RUN bootc container lint
 
@@ -44,7 +44,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
     /ctx/build-kmod && \
     /ctx/build-initramfs && \
-    rm -rf /var/lib /var/run /var/lib/dnf && \
+    rm -rf /var/run /var/lib/dnf && \
     systemctl enable supergfxd.service
 
 RUN bootc container lint
