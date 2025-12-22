@@ -5,3 +5,4 @@ set -euo pipefail
 systemctl enable firstboot-setup.service
 systemctl enable bootloader-update.service
 systemctl mask bootc-fetch-apply-updates.timer
+chmod +x /usr/bin/firstboot-setup
