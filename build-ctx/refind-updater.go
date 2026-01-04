@@ -64,7 +64,7 @@ Initrd=/boot/{{.Initrd}}
 Uname={{.Uname}}
 Cmdline={{.Options}} supergfxd.mode={{.GraphicsMode}}
 OSRelease={{.OSRelease}}
-Splash=/ctx/artistic-landscape.bmp
+Splash=/usr/share/backgrounds/artistic_landscape.bmp
 `))
 
 func generateUKI(entry BootEntry, dstDirectory string) error {
