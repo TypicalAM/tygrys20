@@ -19,40 +19,11 @@ jobs:
   io-image:
     runs-on: ubuntu-24.04
     steps:
+    - name: Maximize build space
+      uses: ublue-os/remove-unwanted-software@v8
 
-    - name: Clean up GitHub Actions runner disk space
-      run: |
-        rm -rf /opt/hostedtoolcache
-        find . -maxdepth 1 -mindepth 1 '!' -path ./containerd '!' -path ./actionarchivecache '!' -path ./runner '!' -path ./runner-cache -exec rm -rf '{}' ';'
-
-        # Stop and remove all running Docker containers (if any were left)
-        docker system prune -a -f || true
-        # Clean up Podman storage
-        podman system prune --all -f || true
-
-        # Remove pre-installed tools that are not needed
-        echo "Disk space before cleaning hostedtoolcache:"
-        df -h
-
-        sudo rm -rf /usr/share/dotnet # .NET SDKs
-        sudo rm -rf /usr/local/lib/android # Android SDKs
-        sudo rm -rf /opt/ghc # Haskell GHC
-        sudo rm -rf /usr/lib/go # Go installations
-        sudo rm -rf /usr/share/swift # Swift
-        sudo rm -rf /opt/hostedtoolcache/* # All hosted tool caches
-        sudo rm -rf /usr/share/python # Remove some Python versions if not needed
-
-        # Be careful with this, as it removes almost everything not checked out
-        # from the current directory, but it might be necessary.
-        # This is more aggressive than your original 'find . -maxdepth 1...'
-        sudo rm -rf /usr/local/lib/node_modules/npm /usr/local/share/npm /usr/local/bin/npm # Node.js if not used
-        sudo apt-get clean # Clean apt cache
-        sudo apt-get autoremove -y # Remove unused dependencies
-
-        echo "Disk space after cleaning hostedtoolcache:"
-        df -h
-
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Podman login
       env:
@@ -74,7 +45,3 @@ jobs:
 
     - name: Push NVIDIA image
       run: podman push docker.piaseczny.dev/machine/tygrys20:nvidia
-
-    - name: Final disk space check (for debugging)
-      if: always() # Run this even if previous steps fail
-      run: df -h
