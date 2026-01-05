@@ -12,3 +12,4 @@ libva-utils
 vdpauinfo
 v4l2loopback
 v4l-utils
+cifs-utils
