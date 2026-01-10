@@ -15,7 +15,7 @@ rm -rf eza_x86_64-unknown-linux-gnu.zip
 curl -LO https://github.com/jesseduffield/lazygit/releases/download/v0.44.0/lazygit_0.44.0_Linux_x86_64.tar.gz
 tar xzf lazygit_0.44.0_Linux_x86_64.tar.gz
 mv lazygit /usr/bin
-rm -rf lazygit_0.44.0_Linux_x86_64.tar.gz
+rm -rf lazygit_0.44.0_Linux_x86_64.tar.gz LICENSE README.md
 
 curl -LO https://github.com/charmbracelet/gum/releases/download/v0.14.5/gum_0.14.5_Linux_x86_64.tar.gz
 tar xzf gum_0.14.5_Linux_x86_64.tar.gz
