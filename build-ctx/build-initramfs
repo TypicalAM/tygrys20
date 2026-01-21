@@ -4,5 +4,5 @@ set -eoux pipefail
 echo "Executing build-initramfs"
 
 kver=$(ls -1 /usr/lib/modules | tail -n1)
-/usr/bin/dracut --no-hostonly --kver "$kver" --reproducible --zstd -v --add ostree --add fido2 -f "/usr/lib/modules/$kver/initramfs.img"
+/usr/bin/dracut --no-hostonly --kver "$kver" --reproducible --zstd -v --add ostree --add bluetooth --add fido2 -f "/usr/lib/modules/$kver/initramfs.img"
 chmod 0600 /usr/lib/modules/"$kver"/initramfs.img
