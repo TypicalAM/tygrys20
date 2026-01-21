@@ -5,8 +5,8 @@ set -euo pipefail
 dnf -y install \
 	"https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
 	"https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-grep -vE '^#' /usr/share/tygrys20/packages-added | xargs dnf -y install --allowerasing
-grep -vE '^#' /usr/share/tygrys20/packages-removed | xargs dnf -y remove
+grep -vE '^#' /usr/share/nuclear/packages-added | xargs dnf -y install --allowerasing
+grep -vE '^#' /usr/share/nuclear/packages-removed | xargs dnf -y remove
 dnf -y autoremove
 dnf clean all
 rm -rf /var/lib/dnf

@@ -7,7 +7,7 @@ FROM docker.io/typicalam/fedora-bootc:43 AS base
 
 LABEL org.opencontainers.image.title="Custom fedora bootc"
 LABEL org.opencontainers.image.description="Customized image of Fedora Bootc"
-LABEL org.opencontainers.image.source="https://github.com/TypicalAM/tygrys20"
+LABEL org.opencontainers.image.source="https://github.com/TypicalAM/nuclear"
 LABEL org.opencontainers.image.licenses="MIT"
 
 COPY system /
@@ -41,7 +41,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=cache,dst=/var/lib/systemd \
     --mount=type=tmpfs,dst=/tmp \
-    grep -vE '^#' /usr/share/tygrys20/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
+    grep -vE '^#' /usr/share/nuclear/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
     /ctx/build-kmod && \
     /ctx/build-initramfs && \
     rm -rf /var/run /var/lib/dnf && \

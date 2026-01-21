@@ -2,10 +2,10 @@
 set -euo pipefail
 
 OS_RELEASE_FILE="/usr/lib/os-release"
-REMIX_NAME="Tygrys20"
+REMIX_NAME="Nuclear"
 CURRENT_DATE=$(date "+%d.%m.%Y")
 GITHUB_REPO_OWNER="TypicalAM"
-GITHUB_REPO_NAME="tygrys20"
+GITHUB_REPO_NAME="nuclear"
 
 echo "Applying custom os-release modifications to $OS_RELEASE_FILE..."
 

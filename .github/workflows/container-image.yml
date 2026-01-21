@@ -35,13 +35,13 @@ jobs:
           --password-stdin
 
     - name: Build base image
-      run: podman build -t docker.piaseczny.dev/machine/tygrys20:latest --target base .
+      run: podman build -t docker.piaseczny.dev/machine/nuclear:latest --target base .
 
     - name: Build NVIDIA image
-      run: podman build -t docker.piaseczny.dev/machine/tygrys20:nvidia --target nvidia .
+      run: podman build -t docker.piaseczny.dev/machine/nuclear:nvidia --target nvidia .
 
     - name: Push base image
-      run: podman push docker.piaseczny.dev/machine/tygrys20:latest
+      run: podman push docker.piaseczny.dev/machine/nuclear:latest
 
     - name: Push NVIDIA image
-      run: podman push docker.piaseczny.dev/machine/tygrys20:nvidia
+      run: podman push docker.piaseczny.dev/machine/nuclear:nvidia

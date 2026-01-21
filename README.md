@@ -1,14 +1,12 @@
-# Tyrgrys20
+# Nuclear
 
-My bootc system based on fedora bootc.
-
-```sh
-sudo podman login --authfile=/etc/ostree/auth.json docker.piaseczny.dev
-sudo rpm-ostree rebase ostree-unverified-registry:docker.piaseczny.dev/machine/tygrys20:latest
-```
+My customized Fedora Atomic image specially crafted for my needs.
 
 # TODO
 
+- [ ] Much better README
+- [ ] Dockerhub availability
+- [ ] Skel with dotfiles (maybe chezmoi?)
 - [-] Automatic after snapper - used btrfs-assistant with default settings
 - [-] Secure boot (N/A)
 - [x] uki
