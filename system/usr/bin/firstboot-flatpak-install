@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+gum style --foreground="#f5a97f" "Installing flatpaks"
+grep -vE '^#' /usr/share/nuclear/flatpaks-added | xargs flatpak --system -y install
+gum style --foreground="#c6a0f6" "Flatpaks installed"
