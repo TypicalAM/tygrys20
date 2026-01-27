@@ -42,7 +42,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=cache,dst=/var/lib/systemd \
     --mount=type=tmpfs,dst=/tmp \
-    grep -vE '^#' /usr/share/nuclear/packages-added-nvidia | xargs dnf -y install --best --allowerasing && \
+    /ctx/install-rpm-packages-nvidia && \
     /ctx/build-kmod && \
     /ctx/build-initramfs && \
     rm -rf /var/run /var/lib/dnf && \

@@ -5,6 +5,23 @@ set -euo pipefail
 dnf -y install \
 	"https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
 	"https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+
+dnf -y install 'dnf5-command(config-manager)'
+
+dnf config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+dnf config-manager setopt tailscale-stable.enabled=0
+dnf -y install --enablerepo='tailscale-stable' tailscale
+
+dnf config-manager addrepo --from-repofile=https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+dnf config-manager setopt nvidia-container-toolkit.enabled=0
+dnf config-manager setopt nvidia-container-toolkit.gpgcheck=1
+
+dnf -y copr enable chenxiaolong/sbctl
+dnf -y copr enable erikreider/SwayNotificationCenter
+dnf -y copr enable solopasha/hyprland
+dnf -y copr enable tofik/nwg-shell
+dnf -y copr enable wezfurlong/wezterm-nightly
+
 grep -vE '^#' /usr/share/nuclear/packages-added | xargs dnf -y install --allowerasing
 grep -vE '^#' /usr/share/nuclear/packages-removed | xargs dnf -y remove
 dnf -y autoremove
