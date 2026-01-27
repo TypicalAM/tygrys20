@@ -10,3 +10,5 @@ git clone https://github.com/vinceliuice/Tela-icon-theme /tmp/Tela-icon-theme
 cd /tmp/Tela-icon-theme
 ./install.sh -d /usr/share/icons dracula
 rm -rf /tmp/kde /tmp/Tela-circle-icon-theme
+
+sed -i 's/^SHELL=.*/SHELL=\/bin\/zsh/' /etc/default/useradd
