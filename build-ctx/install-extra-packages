@@ -27,3 +27,6 @@ rm -rf /var/roothome/.config # go builds cache
 
 curl -L https://github.com/docker/docker-credential-helpers/releases/download/v0.9.3/docker-credential-pass-v0.9.3.linux-amd64 -o /usr/bin/docker-credential-pass
 chmod +x /usr/bin/docker-credential-pass
+
+curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /usr/bin
+curl -fsLS get.chezmoi.io | bash -s -- -b /usr/bin
