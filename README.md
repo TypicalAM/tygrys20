@@ -2,13 +2,19 @@
 
 My customized Fedora Atomic image specially crafted for my needs.
 
+```sh
+sudo just build
+sudo just build-qcow2
+sudo just run-vm-qcow2
+```
+
 # TODO
 
 - [ ] Much better README
 - [ ] Dockerhub availability
-- [ ] Skel with dotfiles (maybe chezmoi?)
 - [-] Automatic after snapper - used btrfs-assistant with default settings
 - [-] Secure boot (N/A)
+- [x] Skel with dotfiles (maybe chezmoi?)
 - [x] uki
 - [x] h264 - vlc & firefox
 - [x] Testing on sencond machine
