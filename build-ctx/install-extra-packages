@@ -30,3 +30,8 @@ chmod +x /usr/bin/docker-credential-pass
 
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /usr/bin
 curl -fsLS get.chezmoi.io | bash -s -- -b /usr/bin
+
+curl -O -L https://github.com/garethgeorge/backrest/releases/download/v1.11.2/backrest_Linux_x86_64.tar.gz
+mkdir backrest && tar -xzvf backrest_Linux_x86_64.tar.gz -C backrest
+mv backrest/backrest /usr/bin/backrest
+rm -rf backrest backrest_Linux_x86_64.tar.gz
