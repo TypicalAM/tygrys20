@@ -65,6 +65,8 @@ Uname={{.Uname}}
 Cmdline={{.Options}} supergfxd.mode={{.GraphicsMode}}
 OSRelease={{.OSRelease}}
 Splash=/usr/share/backgrounds/artistic-landscape.bmp
+SecureBootPrivateKey=/etc/pki/akmods/certs/nuclear.key
+SecureBootCertificate=/etc/pki/akmods/certs/nuclear.crt
 `))
 
 func generateUKI(entry BootEntry, dstDirectory string, hybridOnly bool) error {

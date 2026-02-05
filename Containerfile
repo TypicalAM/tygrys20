@@ -42,6 +42,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=cache,dst=/var/lib/systemd \
     --mount=type=tmpfs,dst=/tmp \
+    --mount=type=secret,id=sb-key,target=/run/secrets/nuclear.key \
     /ctx/install-rpm-packages-nvidia && \
     /ctx/build-kmod && \
     /ctx/build-initramfs && \

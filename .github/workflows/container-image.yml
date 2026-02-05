@@ -43,11 +43,18 @@ jobs:
           --username "$REGISTRY_USERNAME" \
           --password-stdin
 
+    - name: Write Secure Boot key to file
+      run: |
+        install -m 600 /dev/null sb.key
+        printf '%s' "$SB_PRIVATE_KEY" > sb.key
+      env:
+        SB_PRIVATE_KEY: ${{ secrets.SB_PRIVATE_KEY }}
+
     - name: Build base image
-      run: podman build -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest --target base .
+      run: podman build --secret id=sb-key,src=sb.key -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest --target base .
 
     - name: Build NVIDIA image
-      run: podman build -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:nvidia --target nvidia .
+      run: podman build --secret id=sb-key,src=sb.key -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:nvidia --target nvidia .
 
     - name: Push base image
       run: podman push ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
