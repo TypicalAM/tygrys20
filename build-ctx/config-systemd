@@ -3,6 +3,7 @@
 set -euo pipefail
 
 chmod +x /usr/bin/firstboot-setup
+systemctl enable systemd-homed.service
 systemctl enable firstboot-setup.service
 systemctl enable bootloader-update.service
 systemctl enable nix-daemon
